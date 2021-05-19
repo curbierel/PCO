@@ -1,2 +1,2 @@
 # TRAVAIL SUR Simon Cat's de Tofiled
-# puis trvaail sur le Chat de Gelluc
+# puis travail sur le Chat de Gelluc
