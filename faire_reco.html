@@ -1,0 +1,47 @@
+{% extends "base.html" %} {% block title %}Recommandations{% endblock %} {% block content
+%}
+<form name="selec" method="POST" action="" enctype="multipart/form-data">
+  {{ formBD.hidden_tag() }}
+  <h1>Recommandations par la description</h1>
+  J'aimerai un titre ressemblant à 
+      <input type="text" id="titre" name="titre" list="titre-list" required>
+      <datalist id="titre-list" default="Choisir un titre">
+        <option value="Choisir un titre" selected disabled>Choisir un titre</option>
+        {% for tit in lstBD %}
+        <option value="{{ tit.titreC }}" >{{ tit.titreC  }}</option>
+        {% endfor %}
+      </datalist>
+  <br><br><br>
+  <div>
+    {{ formBD.submit(class=btn) }}
+  </div>
+    {{ Ladescription }}
+{% if areco %}
+Nous vous recommandons pour la BD {{ titre }}:
+{% endif %}
+
+<ul class="list-group list-group-horizontal">
+  
+{% for predi in predict %}<li class="list-group-item"> {{ predi }}{% endfor %}</li>
+</ul>
+</form>
+<hr><hr>
+<form name="periode" method="POST" action="" enctype="multipart/form-data">
+<p>Les recommandations qui m'ont été faites du <input id="debut" name="debut" type="date" value="2021-12-01"> au <input id="fin" name="fin" type="date" value="2022-03-28"> {{ formDate.submit(class=btn) }}</p>
+{% set count = namespace(value=0) %}
+{% for reco in listeR %}
+{% if count.value >4%}</br>
+</span>
+{{ reco.titre }}
+<button type="button" class="close" onClick="deleteReco({{ reco.id }})">
+  <span aria-hidden="true">&times;</span>
+</button>
+{% else %}
+<span>
+<img src="{{ reco.image }}" width="85px" align="center">
+{% set count.value = count.value + 1 %}
+{% endif %}
+{% endfor %}
+</form>
+
+{% endblock %}

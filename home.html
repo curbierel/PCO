@@ -1,0 +1,21 @@
+{% extends "base.html" %} {% block title %}Chez moi{% endblock %} {% block content  %}
+{% if user.first_name != "admin" %}
+<form name="selec" method="POST" action="" enctype="multipart/form-data">
+  {{ formBD.hidden_tag() }}
+Toutes les BD référencées:</br>
+<input type="text" id="titre" name="titre" list="titre-list" required>
+      <datalist id="titre-list" default="Choisir un titre">
+        <option value="Choisir un titre" selected disabled>Choisir un titre</option>
+        {% for titre in ListeBD %}
+        <option value="{{ titre.titreC }}" >{{ titre.titreC }}</option>
+        {% endfor %}
+      </datalist>
+    </input>
+        {{ formBD.submit(class=btn) }}
+      
+    {% for tit in MesBD %}
+        <img src="{{ tit.image }}" width="85px">
+    {% endfor %}
+  </form>
+{% endif %}
+{% endblock %}
