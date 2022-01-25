@@ -1,0 +1,130 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content  %}
+<style>
+  .hidden{
+    display:none;
+  }
+</style>
+{{ formBD.hidden_tag() }}
+</head>
+<body>
+  
+{% set count = namespace(value=0) %}
+{% for i in user.notes %}
+  {% if i.data %}
+  {% set count.value = count.value + 1 %}
+  {% endif %}
+{% endfor %}
+{% if  user.first_name =="admin" %}
+Ceci est l'accès au informations du sites
+{% elif count.value >0 %}
+<div class='btn-toolbar pull-right'>
+  <div class="btn-group">
+    <button type="button" class="btn btn-default">Plus de détail</button>
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+      <li><input id="radio-x" type="radio" name="form-toggle">Afficher mes critiques</input></li>
+      <li><input id="radio-y" type="radio" name="form-toggle">Ne pas les afficher</input></li>
+      <li><input id="faire_critique" type="checkbox" name="form-toggle">Faire une critique</input></li>
+    </ul>
+  </div>
+</div>
+ <span> <h1>J'ai évalué {{user.notes|length}} BD dont {{ count.value }} avec des critiques: </span></h1></span><br><br>
+<br>
+<br>
+{% else %}
+<span><h1>Je n'ai fait aucune critique</h1>
+  <form  name="1erecritique" method="POST"> 
+    <input type="text" id="titre" name="titre" list="titre-list">
+    <datalist id="titre-list">
+      {% for SerTi in lstTitre %}
+      <option value="{{ SerTi.titreC }}">{{ SerTi.titreC }}</option>
+      {% endfor %}
+    </datalist>
+    je lui met la note (0 à 5)
+    <select name="lanote" id="lanote-select">
+      <label for="lanote-select">NOTE</label>
+        <option value="">---</option>
+        {% for note in lstnote %}
+         <option value="{{ note.note }}">{{ note.note }}</option>
+        {% endfor %}
+    </select>
+   <textarea name="note" id="note" class="form-control"></textarea>
+   <br />
+   <div>
+     <button type="submit" class="btn btn-primary">Ajouter une critique</button>
+   </div>
+   </form>
+</span>
+{% endif %}
+{% if user.first_name != "admin" %}
+<form class="hidden" name="form1"> 
+  <ul class="list-group list-group-flush" id="notes">
+    {% for note in user.notes%}
+    {% if note.data %}
+    <li class="list-group-item">
+      <b>{{ note.titre }}<u> avec une note de {{ note.note }}</u></b><br>
+      {{ note.data }}
+      <button type="button" class="close" onClick="deleteNote({{ note.id }})">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </li>
+    <div id="scroll_to_top">
+      <a href="#top"><img src="{{url_for('static', filename='scrolltop.png')}}" alt="Retourner en haut" /></a>
+    </div>
+    {% endif %}
+    
+    {% endfor %}
+    {% endif %}
+  </ul>
+</form>
+
+{% if user.first_name != "admin" %}
+<form class="hidden" name="jecritique" method="POST"> 
+  <input type="text" id="titre" name="titre" list="titre-list">
+  <datalist id="titre-list">
+    {% for SerTi in lstTitre %}
+    <option value="{{ SerTi.titreC }}">{{ SerTi.titreC }}</option>
+    {% endfor %}
+  </datalist>
+  je lui met la note (0 à 5)
+  <select name="lanote" id="lanote-select">
+    <label for="lanote-select">NOTE</label>
+      <option value="">---</option>
+      {% for note in lstnote %}
+       <option value="{{ note.note }}">{{ note.note }}</option>
+      {% endfor %}
+  </select>
+ <textarea name="note" id="note" class="form-control"></textarea>
+ <br />
+ <div>
+   <button type="submit" class="btn btn-primary">Ajouter une critique</button>
+ </div>
+ </form>
+ {% endif %}
+<script>
+  const form1 = document.querySelector("form[name='form1']");
+  const form2 = document.querySelector("form[name='form2']");
+  const jecritique = document.querySelector("form[name='jecritique']");
+
+  document.querySelector('#radio-x').addEventListener('change',(event)=>{
+    if (event.target.checked){
+      form1.classList.remove("hidden");}
+    else {
+      form1.classList.add("hidden");}
+  });
+
+  document.querySelector('#radio-y').addEventListener('change',(event)=>{
+    if (event.target.checked){
+      form1.classList.add("hidden");}
+    });
+  
+  document.querySelector('#faire_critique').addEventListener('change',(event)=>{
+    if (event.target.checked){
+      jecritique.classList.remove("hidden");}
+    else {
+      jecritique.classList.add("hidden");}
+    });
+</script>
+{% endblock %}

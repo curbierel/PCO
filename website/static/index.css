@@ -1,0 +1,7 @@
+#scroll_to_top {
+    position: fixed;
+    width: 5px;
+    height: 5px;
+    bottom: 5px;
+    right: 3 px;
+  }
