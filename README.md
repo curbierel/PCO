@@ -6,4 +6,4 @@
 
 
 Il est important de préciser que ce PCO est un proof of concept. La base de donnée est sqlite donc non utilisable par plusieurs utilisateurs en même temps
-Une évolution de ce projet se trouve dans ProjetPerso/
+Une évolution de ce projet se trouve dans ProjetPerso/, de même l'interface web est géré par Flask et je veux mettre en place une interface web sous Django
